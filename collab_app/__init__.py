@@ -36,4 +36,4 @@ def create_app(test_config=None):
 
 
 create_app()
-app.run(debug=True)
+app.run(port=4004, debug=config.DEBUG, host='0.0.0.0', use_reloader=False)
