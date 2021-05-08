@@ -1,8 +1,8 @@
 import os
 from flask import Flask
-
-app = Flask(__name__, instance_relative_config=True)
 print(__name__)
+app = Flask(__name__, instance_relative_config=True)
+
 def create_app(test_config=None):
     # create and configure the app
 
@@ -21,7 +21,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    from collab_app import db
+    from . import db
     db.init_app(app)
 
     from . import auth
