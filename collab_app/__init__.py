@@ -2,9 +2,10 @@ import os
 from flask import Flask
 
 app = Flask(__name__, instance_relative_config=True)
-print(__name__)
+print("out collab app")
 def create_app(test_config=None):
     # create and configure the app
+    print("in collab app")
 
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -36,5 +37,4 @@ def create_app(test_config=None):
 
 
 create_app()
-app.run(host=os.getenv('IP', '0.0.0.0'), 
-            port=int(os.getenv('PORT', 4444)))
+app.run(debug=True)
