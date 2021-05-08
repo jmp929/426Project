@@ -34,7 +34,6 @@ def create_app(test_config=None):
     return app
 
 
-if os.environ.get('WERKZEUG_RUN_MAIN') != 'true':
-    # do something only once, before the reloader
-    create_app()
-    app.run(debug=False)
+
+create_app()
+app.run(debug=False)
