@@ -49,9 +49,9 @@
           <form action="{{ url_for('post.info', id=post['id']) }}" method="post" class="form">
             {% if test[0] == "True" %}
             <input class="btn btn-primary" id="sub" type="submit" data-arr="{{ members }}" value="Unregister :(">
-            {{test[0]}}
+          
             {% else %}
-            {{test[0]}}
+      
             <input class="btn btn-primary" id="sub" type="submit" data-arr="{{ members }}" value="Sign Up Now!">
             {% endif %}
           </form>

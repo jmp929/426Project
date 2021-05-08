@@ -11,6 +11,7 @@ const loadPosts = () => {
   $.ajax({ 
     url: "/getCoords/" 
   }).then(function(res) { 
+    console.log(res.posts)
     getMarkers(res.posts)
   }); 
 
@@ -40,8 +41,8 @@ const getMarkers = async (posts) =>  {
               coordinates: [x[10], x[9]]
             },
             properties: {
-              title: x[1],
-              description: x[8],
+              title: x[4],
+              description: x[5],
               id: x[0]
             }
           }

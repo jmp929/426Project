@@ -51,8 +51,6 @@
           <h5 class="card-title">{{ post['description']}} </h5>
           <p class="card-text">{{posts['description']}}</p>
           {% for class in classes %}
-            {{class['class_id']}}
-            {{post['class_id']}}
           {% if class['class_id'] == post['class_id'] %}
           <div class="card-footer">
            <p>More Information</p>

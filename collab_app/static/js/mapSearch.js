@@ -44,8 +44,8 @@ const getMarkers = async (posts) =>  {
             },
             properties: {
               title: x[1],
-              description: x[8],
-              id: x[0]
+              description: x[4],
+              id: x[5]
             }
           }
     featured.push(inst)
