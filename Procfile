@@ -1,1 +1,1 @@
-web: gunicorn app:uncollabapp
+web: gunicorn __int__:app
