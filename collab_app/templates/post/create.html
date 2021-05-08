@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr"></html>
+<head>
+  <meta charset="UTF-8">
+  <title>New Post</title>
+  <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+  {% include 'navbar.html' %}
+  <form method="post" onsubmit="return await checker()" style="width: 80%;">
+    
+
+    <div class="form-group row">
+    <label for="title" class="col-2 col-form-label">Title</label>
+    <div class="col-10">
+    <input name="title" class="form-control" id="title" value="{{ request.form['title'] }}" required>
+  </div>
+    </div>
+
+    <div class="form-group row">
+    <label for="class" class="col-2 col-form-label">Class</label>
+    <div class="col-10">
+    <input name="class" class="form-control" id="class" value="{{ request.form['class'] }}" required>
+  </div>
+    </div>
+
+    <div class="form-group row">
+    <label for="description" class="col-2 col-form-label">Description</label>
+    <div class="col-10">
+    <textarea name="description" class="form-control" id="description">{{ request.form['description'] }}</textarea>
+  </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="datetime" class="col-2 col-form-label">date and time</label>
+    <div class="col-10">
+      <input name="datetime" type="datetime-local" class="form-control"  id="datetime" value="{{ request.form['datetime'] }}" required>
+  </div>
+  </div>
+  
+
+  <div class="form-group row">
+    <label for="duration" class="col-2 col-form-label">Duration</label>
+    <div class="col-10">
+    <input type="number" name="duration" class="form-control" id="duration" min="1" value="{{ request.form['duration'] }}" required>
+  </div>
+  </div>
+
+    <div class="form-group row">
+    <label for="type" class="col-2 col-form-label">Type</label>
+    <div class="col-10">
+    <select name="type" class="form-control" id="type" value="{{ request.form['type'] }}" required>
+      <option selected>Choose...</option>
+      <option>In Person</option>
+      <option>Zoom</option>
+    </select>
+  </div>
+  </div>
+  
+    <div class="form-group row">
+    <label for="location" class="col-2 col-form-label">Location</label>
+    <div class="col-10">
+    <input autocomplete="off" name="location" class="form-control" id="location" list="loc" value="{{ request.form['location'] }}" required>
+
+    <datalist id="loc"></datalist>
+  </div>
+  </div>
+
+  <input type="hidden" name="x_cord" class="form-control" id="x_cord" value="{{ request.form['x_cord'] }}" required>
+  <input type="hidden" name="y_cord" class="form-control" id="y_cord" value="{{ request.form['y_cord'] }}" required>
+
+    <div class="form-group row">
+    <label for="reason" class="col-2 col-form-label">Reason</label>
+    <div class="col-10">
+      <input name="reason" class="form-control" id="reason" placeholder="" value="{{ request.form['reason'] }}" required>
+    </div>
+ </div>
+
+    <input class="btn btn-primary" type="submit" value="Save">
+  </form>
+  {% for mesg in get_flashed_messages() %}
+  <h1>{{ mesg }}</h1>
+  {% endfor %}
+
+  <script>
+
+    async function checker() {
+      let result = await axios({
+        method: 'get',
+        url: 'https://app.geocodeapi.io/api/v1/autocomplete?apikey=99ceae10-adc4-11eb-b663-573dded9f812',
+        params: {
+            size: 5,
+            text: txt,
+        }
+      })
+
+      let arr = result.data.features
+
+      if ($('#type').val() == "Zoom") {
+        $('#x_cord').val(null);
+        $('#y_cord').val(null);
+        return true;
+
+      }
+      
+      arr.forEach((x) => {
+        if (x.properties.label == $('#location').val()) {
+          x_cord = x.geometry.coordinates[1]
+          y_cord = x.geometry.coordinates[0]
+
+          $('#x_cord').val(x_cord) 
+          $('#y_cord').val(y_cord)
+
+          return true;
+        }
+      })
+
+      return false;  
+      
+    }
+
+    $('#location').on("keyup", async () => {
+
+      console.log($('#type').val())
+      $('#x_cord').val(null)
+      $('#y_cord').val(null)
+      
+      if ($('#location').val() != ""  && $('#type').val() != "Zoom") {
+        const txt = $('#location').val()
+        console.log(txt)
+        let result = await axios({
+          method: 'get',
+          url: 'https://app.geocodeapi.io/api/v1/autocomplete?apikey=99ceae10-adc4-11eb-b663-573dded9f812',
+          params: {
+              size: 5,
+              text: txt,
+          }
+        })
+    console.log(result)
+
+    let arr = result.data.features
+    console.log(arr)
+
+      arr.forEach((x) => {
+        if (x.properties.label == $('#location').val()) {
+          x_cord = x.geometry.coordinates[1]
+          y_cord = x.geometry.coordinates[0]
+
+          $('#x_cord').val(x_cord) 
+          $('#y_cord').val(y_cord)
+        }
+      })
+
+    while (document.getElementById("loc").firstChild) {
+      document.getElementById("loc").removeChild(document.getElementById("loc").lastChild)
+    }
+
+    
+
+      arr.forEach((x) => {
+        let op = document.createElement("option")
+        op.value = x.properties.label;
+        document.getElementById("loc").appendChild(op)
+      })
+    
+    
+    }
+  })
+  </script>
+
+ </body>
+ </html>

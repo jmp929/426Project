@@ -1,0 +1,119 @@
+
+<nav class="navbar navbar-expand-lg navbar-lightr" style="background-color: #e3f2fd;">
+  <a class="navbar-brand" href="#">UNCollab</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{{url_for('post.index')}}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      {% if g.user %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('post.profile', id=g.user['id']) }}">Profile</a>
+      </li>
+      {% endif %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Something Different
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#" id="ROQ">Random Office Quote</a>
+          <a class="dropdown-item" href="#" id="RIQ">Random Chuck Norris Joke</a>
+          <a class="dropdown-item" href="#" id="RDJ">Random Dad Joke</a>
+        </div>
+      </li>
+      {% if g.user %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('post.create') }}">Create New Event</a>
+      </li>
+      {% endif %}
+      
+    </ul>
+
+    
+   
+    <form id="sf" class="form-inline my-2 my-lg-0">
+      <input list="cs" class="form-control mr-sm-2" id="search_bar" autocomplete="off" placeholder="Search By Class" aria-label="Search">
+      <datalist id="cs"></datalist>
+      <button class="btn btn-outline-success my-2 my-sm-0" id="search_trgt" type="button">Search by Class</button>
+    </form>
+    {% if g.user %}
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          user info
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item disabled" id="username">{{ g.user['username'] }}</a>
+          <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
+        </div>
+      </li>
+      </ul>
+    {% else %}
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          user info
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+         <a class="nav-link"href="{{ url_for('auth.login') }}">Log In</a>
+        </div>
+      </li>
+      </ul>
+    {% endif %}
+    </div>
+    </nav>
+
+    <div class="modal" tabindex="-1" id="RDJ_modal" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Random Dad Joke</h5>
+                  <button id="RDJ_close" type="button" class="btn btn-secondary">X</button>
+              </div>
+              <div class="modal-body">
+                <p id="RDJ_setup"></p>
+                <br>
+                <p id="RDJ_punchline"></p>
+                <br>
+                <div id="RDJ_GIF"></div>
+              </div>
+          </div>
+      </div>
+    </div>
+    
+    <div class="modal" tabindex="-1" id="RIQ_modal" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Random Chuck Norris Joke</h5>
+                  <button id="RIQ_close" type="button" class="btn btn-secondary">X</button>
+              </div>
+              <div class="modal-body">
+                <p id="RIQ_quote"></p>
+                <br>
+                <div id="RIQ_GIF"></div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="ROQ_modal" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Random Office Quote</h5>
+                  <button id="ROQ_close" type="button" class="btn btn-secondary">X</button>
+              </div>
+              <div class="modal-body">
+                <p id="ROQ_quote"></p>
+                <br>
+                <div id="ROQ_GIF"></div>
+              </div>
+          </div>
+      </div>
+    </div>

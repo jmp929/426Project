@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <!-- <script src="../static/js/map.js"></script> -->
+  <script src="../static/js/App.js"></script>
+  
+  
+</head>
+<body>
+
+
+  {% include 'navbar.html' %}
+
+  {% for mesg in get_flashed_messages() %}
+  <h1>{{ mesg }}</h1>
+  {% endfor %}
+  <h1 class='title1'>Post Information</h1>
+
+      <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="card-header">
+         <h2> {{ post['title'] }}</h5>
+         <h4 class="card-subtitle mb-2 text-muted">Scheduled for {{ post['start_time'] }}</h4>
+         <h4 class="card-subtitle mb-2 text-muted">Scheduled to last {{ post['duration'] }} minutes</h4>
+         <h4 class="card-subtitle mb-2 text-muted">Format of event: {{ post['type'] }}</h4>
+        <h4 class="card-subtitle mb-2 text-muted">Location: {{ post['location'] }}</h4>
+
+        </div>
+       
+        <div class="card-body">
+          <p class="card-text">{{post['description']}}</p>
+          <br>
+          <h7 class="card-title">Students Signed Up To Attend</h7>
+          <ol class="list-group list-group-numbered">
+          {% for member in members %}
+            <li class="list-group-item">{{ member['first_name'] }} {{ member['last_name'] }}</li>
+          {% endfor %}
+        </ol>
+        <br>
+        <div class="btn-group">
+          <form action="{{ url_for('post.info', id=post['id']) }}" method="post" class="form">
+            {% if test[0] == "True" %}
+            <input class="btn btn-primary" id="sub" type="submit" data-arr="{{ members }}" value="Unregister :(">
+            {{test[0]}}
+            {% else %}
+            {{test[0]}}
+            <input class="btn btn-primary" id="sub" type="submit" data-arr="{{ members }}" value="Sign Up Now!">
+            {% endif %}
+          </form>
+          <br>
+            <a class="btn btn-secondary" data-arr="{{ members }}" href="{{ url_for('post.index') }}" style="margin-left: 10px;">Return to Homepage</a>
+        </div>
+        </div>
+      </div>  
+
+     
+
+
+
+
+</body>
+</html>

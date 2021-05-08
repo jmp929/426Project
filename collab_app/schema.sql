@@ -1,0 +1,70 @@
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS classes;
+DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS class_members;
+DROP TABLE IF EXISTS event;
+DROP TABLE IF EXISTS announcements;
+
+CREATE TABLE user(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT UNIQUE NOT NULL,
+  username TEXT UNIQUE NOT NULL,
+  password INTEGER NOT NULL,
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE classes(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE posts(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author_id INTEGER NOT NULL,
+  class_id INTEGER NOT NULL,
+  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  title TEXT NOT NULL,
+  description TEXT,
+  type TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  location TEXT NOT NULL,
+  x_cord FLOAT,
+  y_cord FLOAT,
+  start_time DATETIME NOT NULL,
+  duration INTEGER NOT NULL,
+  FOREIGN KEY (author_id) REFERENCES user (id),
+  FOREIGN KEY (class_id) REFERENCES classes (id)
+);
+
+CREATE TABLE event(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author_id INTEGER NOT NULL,
+  class_id INTEGER NOT NULL,
+  post_id INTEGER NOT NULL,
+  member_id INTEGER NOT NULL,
+  FOREIGN KEY (class_id) REFERENCES classes (id),
+  FOREIGN KEY (post_id) REFERENCES post (id),
+  FOREIGN KEY (member_id) REFERENCES user (id)
+  
+);
+
+CREATE TABLE class_members(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  member_id INTEGER NOT NULL,
+  class_id INTEGER NOT NULL,
+  FOREIGN KEY (member_id) REFERENCES user (id),
+  FOREIGN KEY (class_id) REFERENCES classes (id)
+);
+
+CREATE TABLE announcements(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author_id INTEGER NOT NULL,
+  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL,
+  FOREIGN KEY (author_id) REFERENCES user (id)
+);
+
+

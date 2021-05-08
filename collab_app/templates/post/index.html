@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <script src="../static/js/map.js"></script>
+  <script src="../static/js/App.js"></script>
+  
+  
+</head>
+<body>
+  {% include 'navbar.html' %}
+  <h1 class='title1'>Map of In Person Events</h1>
+  
+
+  <div id='map'></div>
+  
+  <br>
+  <br>
+  {% for mesg in get_flashed_messages() %}
+  <h1>{{ mesg }}</h1>
+  {% endfor %}
+
+  
+  <h2 class="title2" style="text-align: center; float: none;">List of Class Posts</h2>
+  <br>
+
+  {% for post in posts %}
+      <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+        <div class="card-header">
+         <h5> {{ post['title'] }}</h5>
+         <h6 class="card-subtitle mb-2 text-muted">Posted By {{ post['first_name'] }} {{ post['last_name'] }}</h6>
+        </div>
+       
+        <div class="card-body">
+          <h5 class="card-title">{{ post['description']}} </h5>
+          <p class="card-text">{{posts['description']}}</p>
+          {% for class in classes %}
+          {% if class['class_id'] == post['class_id'] %}
+          <div class="card-footer">
+            {% set id = post['id'] %}
+            <a class="action" href="{{ url_for('post.info', id=post['id']) }}" >More Information</a>
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% if g.user['id'] == post['author_id'] %}
+          <div class="card-footer">
+            <a class="action" href="{{ url_for('post.update', id=post['id']) }}">Edit</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+  
+</body>
+</html>
