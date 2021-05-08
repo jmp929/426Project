@@ -5,8 +5,8 @@ app = Flask(__name__, instance_relative_config=True)
 
 def create_app(test_config=None):
     # create and configure the app
-    global app
- 
+    
+
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'collab_app.sqlite'),
@@ -30,7 +30,7 @@ def create_app(test_config=None):
 
     from . import post
     app.register_blueprint(post.bp)
-    app.add_url_rule('/', endpoint='index')
+    app.add_url_rule('/', 'index', index)
 
     return app
 
