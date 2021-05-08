@@ -35,6 +35,6 @@ def create_app(test_config=None):
     return app
 
 
-if __name__ == "__main__":
-    create_app()
-    app.run(debug=True)
+
+create_app()
+app.run(debug=True)
