@@ -16,7 +16,6 @@ bp = Blueprint('post', __name__)
 @bp.route('/')
 @bp.route('/<clss>')
 def index(clss=None):
-  print("jacob we made it")
   if clss is not None:
     db = get_db()
     posts = db.execute(
