@@ -1,1 +1,1 @@
-web: gunicorn __int__:app
+web: gunicorn post:app
